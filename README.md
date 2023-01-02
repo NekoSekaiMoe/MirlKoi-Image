@@ -3,7 +3,7 @@
 
 ## Usage
 下载图片请输入 `make`命令，下载完的图片在build文件夹下
-打包图片请输入`make pack-tgz-file`命令，默认打包成tgg格式
+打包图片请输入`make pack-tgz-file`命令，默认打包成tgz格式
 或者输入`make pack-zip-file`命令，打包成zip格式
 压缩完成后的文件在`output`目录下
 ## Requirements

@@ -38,7 +38,7 @@ pack-zip-file:build
 	cd build
 	zip -r -v -9 ../output/output.zip ./*
 	fi
-unpack:output
+cancel-pack:output
 	rm -rf -v output
 clean:
 	rm -rf -v build output
