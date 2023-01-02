@@ -7,9 +7,6 @@
 或者输入`make pack-zip-file`命令，打包成zip格式
 压缩完成后的文件在`output`目录下
 ## Requirements
-- [aria2]
-- [make]
-- [tar]
-- [pigz]
- 或者 
-- [zip]
+- aria2
+- make
+- zip(也可以用pigz和tar)
