@@ -16,7 +16,7 @@ add:/usr/bin/aria2c /usr/bin/tar /usr/bin/pigz
 	aria2c --input-file=../config/竖屏.txt --dir=竖屏/ -j8 -s8 --force-save=false
 	aria2c --input-file=../config/横屏.txt --dir=横屏/ -j8 -s8 --force-save=false
 	find ./* -type f -name "*.aria2c" -exec rm -f -v {} \;
-export:build
+pack-tgz-file:build
 	if [ ! -f "output/output.tgz" ];then
 	rm -rf -v output
 	mkdir -p -v output
@@ -27,7 +27,18 @@ export:build
 	cd build
 	tar -cvf - ./* | pigz -p 8 -v -9 > ../output/output.tgz
 	fi
-stop-export:output
+pack-zip-file:build
+	if [ ! -f "output/output.zip" ];then
+	rm -rf -v output
+	mkdir -p -v output
+	cd build
+	zip -r -v -9 ../output/output.zip ./*
+	 else
+	mkdir -p -v output
+	cd build
+	zip -r -v -9 ../output/output.zip ./*
+	fi
+unpack:output
 	rm -rf -v output
 clean:
 	rm -rf -v build output
