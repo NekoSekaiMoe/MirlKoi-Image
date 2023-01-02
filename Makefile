@@ -1,6 +1,6 @@
 .ONESHELL:
 SHELL := /bin/bash
-add:/usr/bin/aria2c /usr/bin/tar /usr/bin/pigz
+download:/usr/bin/aria2c /usr/bin/tar /usr/bin/pigz
 	mkdir build
 	cd build
 	mkdir -p -v 兽耳
