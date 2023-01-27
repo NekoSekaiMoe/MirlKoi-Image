@@ -16,6 +16,7 @@ download:/usr/bin/aria2c
 	@aria2c --input-file=../config/竖屏.txt --dir=竖屏/ -j8 -s8 --force-save=false
 	@aria2c --input-file=../config/横屏.txt --dir=横屏/ -j8 -s8 --force-save=false
 	@find ./* -type f -name "*.aria2c" -exec rm -f -v {} \;
+	@cd ../
 pack-tgz-file:build /usr/bin/tar /usr/bin/pigz
 	@if [ ! -f "output/output.tgz" ];then
 	@rm -rf -v output
@@ -43,7 +44,7 @@ cancel-pack:output
 clean:
 	rm -rf -v build 
 clean-all:
-	rm -rf build output
+	rm -rf -v build output
 help:
 	@echo this depends package:
 	@echo zip or tar and pigz
