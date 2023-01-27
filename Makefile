@@ -1,6 +1,6 @@
 .ONESHELL:
 SHELL := /bin/bash
-download:/usr/bin/aria2c /usr/bin/tar /usr/bin/pigz
+download:/usr/bin/aria2c 
 	@mkdir build
 	@cd build
 	@mkdir -p -v 兽耳
@@ -16,7 +16,7 @@ download:/usr/bin/aria2c /usr/bin/tar /usr/bin/pigz
 	@aria2c --input-file=../config/竖屏.txt --dir=竖屏/ -j8 -s8 --force-save=false
 	@aria2c --input-file=../config/横屏.txt --dir=横屏/ -j8 -s8 --force-save=false
 	@find ./* -type f -name "*.aria2c" -exec rm -f -v {} \;
-pack-tgz-file:build
+pack-tgz-file:build /usr/bin/tar /usr/bin/pigz
 	@if [ ! -f "output/output.tgz" ];then
 	@rm -rf -v output
 	@mkdir -p -v output
@@ -27,7 +27,7 @@ pack-tgz-file:build
 	@cd build
 	@tar -cvf - ./* | pigz -p 8 -v -9 > ../output/output-`(date +%Y-%m-%d)`.tgz
 	@fi
-pack-zip-file:build
+pack-zip-file:build /usr/bin/zip
 	@if [ ! -f "output/output.zip" ];then
 	@rm -rf -v output
 	@mkdir -p -v output
