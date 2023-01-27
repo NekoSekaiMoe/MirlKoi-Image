@@ -41,7 +41,9 @@ pack-zip-file:build
 cancel-pack:output
 	rm -rf -v output
 clean:
-	rm -rf -v build output
+	rm -rf -v build 
+clean-all:
+	rm -rf build output
 help:
 	@echo this depends package:
 	@echo zip or tar and pigz
