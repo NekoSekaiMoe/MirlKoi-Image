@@ -5,6 +5,8 @@ ZIP = zip -r -v -9
 RM = rm -rf -v
 OUT = output-`(date +%Y-%m-%d)`
 
+.PHONY: all
+all: download pack-zip-file
 .ONESHELL:
 SHELL := /bin/bash
 download:/usr/bin/aria2c 
