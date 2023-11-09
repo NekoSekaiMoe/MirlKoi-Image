@@ -26,7 +26,7 @@ download:/usr/bin/aria2c
 	@$(DOWN) --input-file=../config/横屏.txt --dir=横屏/ 
 	@find ./* -type f -name "*.aria2c" -exec $(RM) {} \;
 	@cd ../
-pack-tgz-file:build /usr/bin/tar /usr/bin/pigz
+pack-tgz-file: /usr/bin/tar /usr/bin/pigz
 	@if [ ! -f "output/output.tgz" ];then
 	@$(RM) -rf -v output
 	@$(MKDIR) output
@@ -37,7 +37,7 @@ pack-tgz-file:build /usr/bin/tar /usr/bin/pigz
 	@cd build
 	@$(TAR) > ../output/$(OUT).tgz
 	@fi
-pack-zip-file:build /usr/bin/zip
+pack-zip-file: /usr/bin/zip
 	@if [ ! -f "output/output.zip" ];then
 	@$(RM) output
 	@$(MKDIR) output
