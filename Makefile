@@ -1,61 +1,63 @@
+SHELL := /bin/bash
+
 MKDIR = mkdir -p -v
 DOWN = aria2c -j8 -s8 --force-save=false
 TAR = tar -cvf - ./* | pigz -p 8 -v -9
 ZIP = zip -r -v -9
 RM = rm -rf -v
-OUT = output-`(date +%Y-%m-%d)`
+BINCOLOR    = \033[34;1m
+ENDCOLOR    = \033[0m
+OUT = output-$(shell date +%Y-%m-%d)
+TARGETS=兽耳 银发 精选图 竖屏 横屏
+DEPS=/usr/bin/aria2c /usr/bin/tar /usr/bin/pigz /usr/bin/zip
 
-.PHONY: all
+.PHONY: all download pack-tgz-file pack-zip-file cancel-pack clean clean-all help
+
+ifeq ("$(origin VERBOSE)", "command line")
+  BUILD_VERBOSE = $(VERBOSE)
+endif
+ifndef BUILD_VERBOSE
+  BUILD_VERBOSE = 0
+endif
+
+ifeq ($(BUILD_VERBOSE),1)
+  Q =
+else
+  Q = @
+endif
+
+# Recipes
 all: download pack-zip-file
-.ONESHELL:
-SHELL := /bin/bash
-download:/usr/bin/aria2c 
-	@mkdir build
-	@cd build
-	@$(MKDIR) 兽耳
-	@$(MKDIR) 银发
-	@$(MKDIR) 精选图
-	@$(MKDIR) 竖屏
-	@$(MKDIR) 横屏
-	@$(RM) 兽耳\r/ 横屏\r/ 竖屏\r/ 精选图\r/ 银发\r/
-	@$(DOWN) --input-file=../config/兽耳（2515）.txt --dir=兽耳/ 
-	@$(RM) 兽耳\r/ 横屏\r/ 竖屏\r/ 精选图\r/ 银发\r/
-	@$(DOWN) --input-file=../config/银发（2071）.txt --dir=银发/ 
-	@$(DOWN) --input-file=../config/精选图（3957）.txt --dir=精选图/ 
-	@$(DOWN) --input-file=../config/竖屏.txt --dir=竖屏/ 
-	@$(DOWN) --input-file=../config/横屏.txt --dir=横屏/ 
-	@find ./* -type f -name "*.aria2c" -exec $(RM) {} \;
-	@cd ../
-pack-tgz-file: /usr/bin/tar /usr/bin/pigz
-	@if [ ! -f "output/output.tgz" ];then
-	@$(RM) -rf -v output
-	@$(MKDIR) output
-	@cd build 
-	@$(TAR) > ../output/$(OUT).tgz
-	@else
-	@$(MKDIR) output
-	@cd build
-	@$(TAR) > ../output/$(OUT).tgz
-	@fi
-pack-zip-file: /usr/bin/zip
-	@if [ ! -f "output/output.zip" ];then
-	@$(RM) output
-	@$(MKDIR) output
-	@cd build
-	@$(ZIP) ../output/$(OUT).zip ./*
-	@else
-	@$(MKDIR) output
-	@cd build
-	@$(ZIP) ../output/$(OUT).zip ./*
-	@fi
-cancel-pack:output
-	$(RM) output
+
+download: $(DEPS)
+	$(Q)cd build; \
+	$(Q)$(RM) $$(printf '%s\r/ ' $(TARGETS)); \
+	$(Q)for tgt in $(TARGETS); do \
+		$(Q)$(DOWN) --input-file=../config/""$$tgt"" --dir=$$tgt/; \
+	$(Q)done; \
+	$(Q)find ./* -type f -name "*.aria2c" -exec $(RM) {} \;
+
+pack-tgz-file: $(DEPS)
+	$(Q)$(RM) -rf -v output
+	$(Q)$(MKDIR) output
+	$(Q)cd build; $(TAR) > ../output/$(OUT).tgz
+
+pack-zip-file: $(DEPS)
+ 	$(Q)$(RM) -rf -v output
+	$(Q)$(MKDIR) output
+	$(Q)cd build; $(ZIP) ../output/$(OUT).zip ./*
+
+cancel-pack:
+	$(Q)$(RM) output
+
 clean:
-	$(RM) build 
+	$(Q)$(RM) build 
+
 clean-all:
-	$(RM) build output
+	$(Q)$(RM) build output
+
 help:
-	@echo this depends package:
+ 	@echo this depends package:
 	@echo zip or tar and pigz
 	@echo aria2
 	@echo
