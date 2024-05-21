@@ -1,10 +1,10 @@
 SHELL := /bin/bash
 
-MKDIR = mkdir -p -v
 DOWN = aria2c -j8 -s8 --force-save=false
 TAR = tar -cvf - ./* | pigz -p 8 -v -9
 ZIP = zip -r -v -9
 RM = rm -rf -v
+BUILD = build
 BINCOLOR    = \033[34;1m
 ENDCOLOR    = \033[0m
 OUT = output-$(shell date +%Y-%m-%d)
@@ -18,6 +18,17 @@ ifeq ("$(origin VERBOSE)", "command line")
 endif
 ifndef BUILD_VERBOSE
   BUILD_VERBOSE = 0
+endif
+
+ifeq ("$(wildcard $(OUT))","")
+  $(shell mkdir $(OUT))
+else
+  $(shell rm -rf $(OUT)/*) 
+endif
+ifeq ("$(wildcard $(BUILD))","")
+  $(shell mkdir $(BUILD))
+else
+  $(shell rm -rf $(BUILD)/*) 
 endif
 
 ifeq ($(BUILD_VERBOSE),1)
